@@ -12,15 +12,14 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-
-@DiscriminatorValue("ADHERENT")
-@Getter
-@Setter
+@Table(name = "adherent")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Adherent extends User {

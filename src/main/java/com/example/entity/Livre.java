@@ -10,14 +10,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "livre")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Livre {
@@ -32,28 +32,19 @@ public class Livre {
 		
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
-
-	  
-
+	    private Long livre_id;
 	    private String titre;
-
 	    private int anneePublication;
-
 	    private String ISBN;
-
 	    @Enumerated(EnumType.STRING)
 	    private Langue langue;
-
 	    private String description;
-
 	    private int quantite;
-
 	    private double amendeParJour;
-
 	    private String genre;
 
 	    @ManyToOne
 	    @JoinColumn(name = "auteur_id")
 	    private Auteur auteur;
+	    
 }

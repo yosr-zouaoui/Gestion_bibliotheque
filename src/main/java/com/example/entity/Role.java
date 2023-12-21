@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.example.entity.Emprunt.Status;
@@ -19,19 +20,18 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "role")
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
-    private Long id;
-
+    private Long role_id;
     private String nom;
-
     private String description;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Set<User> employees = new HashSet<User>();
 
 }

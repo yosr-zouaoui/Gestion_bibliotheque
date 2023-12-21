@@ -2,6 +2,7 @@ package com.example.entity;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.mapping.List;
@@ -32,14 +33,11 @@ public class Auteur {
         DECEDE,
         VIVANT
     }
-
-	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long auteur_id;
 	
     private String nom;
-
 	
     private String prenom;
 
@@ -50,8 +48,8 @@ public class Auteur {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "auteur", cascade = CascadeType.ALL)
-    private Collection<Livre> livre;
+    @OneToMany(mappedBy = "auteur")
+    private Set<Livre> livres;
 
 
    

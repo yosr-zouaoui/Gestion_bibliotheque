@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,8 +24,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "emprunt")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Emprunt {
@@ -38,7 +38,7 @@ public class Emprunt {
 
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
+	    private Long emprunt_id;
 
 	    @Enumerated(EnumType.STRING)
 	    private Status status;
@@ -59,6 +59,10 @@ public class Emprunt {
 	    @ManyToOne
 	    @JoinColumn(name = "livre_id")
 	    private Livre livre;
+	    
+	    @ManyToOne
+	    @JoinColumn(name = "user_id")
+	    private Adherent adherent;
 
 	    // Constructors
 
