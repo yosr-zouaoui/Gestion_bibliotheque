@@ -2,8 +2,6 @@ package com.example.entity;
 
 import java.util.Date;
 
-import com.example.entity.Auteur.Status;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,9 +15,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
@@ -59,12 +55,12 @@ public class Emprunt {
 	    @ManyToOne
 	    @JoinColumn(name = "livre_id")
 	    private Livre livre;
-	    
+
 	    @ManyToOne
 	    @JoinColumn(name = "user_id")
 	    private Adherent adherent;
 
 	    // Constructors
 
-	 	
+
 }

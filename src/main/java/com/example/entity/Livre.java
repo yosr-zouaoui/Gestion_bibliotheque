@@ -11,9 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "livre")
@@ -29,7 +27,7 @@ public class Livre {
 		        ANGLAIS
 		    }
 
-		
+
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long livre_id;
@@ -46,5 +44,5 @@ public class Livre {
 	    @ManyToOne
 	    @JoinColumn(name = "auteur_id")
 	    private Auteur auteur;
-	    
+
 }
