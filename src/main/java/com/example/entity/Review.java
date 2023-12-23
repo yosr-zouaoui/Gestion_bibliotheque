@@ -23,11 +23,11 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long review_id;
     private long rate;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "livre_id")
     private Livre livre;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Adherent adherent;

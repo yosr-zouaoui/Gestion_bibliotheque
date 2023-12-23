@@ -14,20 +14,20 @@ public class UserService implements IUserService{
 
 	@Autowired
 	private UserDAO userDAO;
-	
-	//@Transactional délégue la gestion des transactions au conteneur IOC 
+
+	//@Transactional délégue la gestion des transactions au conteneur IOC
 	@Transactional
 	@Override
 	public List<User> getUsers() {return userDAO.getUsers();}
-	
+
 	@Transactional
 	@Override
 	public User getUser(int id) {return userDAO.getUser(id);}
-	
+
 	@Transactional
 	@Override
 	public void saveUser(User user) {userDAO.saveUser(user);}
-	
+
 	@Transactional
 	@Override
 	public void deleteUser(int id) {userDAO.deleteUser(id);}
