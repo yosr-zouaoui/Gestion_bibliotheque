@@ -21,19 +21,19 @@ public class UserDAO implements IUserDAO{
 	private EntityManager entityManger;
 	@Override
 	public List<User> getUsers() {
-		try 
+		try
 		{
 			Session currentSession = entityManger.unwrap(Session.class);
 			Query<User> query = currentSession.createQuery("from User", User.class);
 			List<User> list = query.getResultList();
-			return list;	
+			return list;
 		}
 		catch(Exception ex) {System.out.println(ex.getMessage());return null;}
 		}
 
 	@Override
 	public User getUser(int id) {
-		try 
+		try
 		{
 			Session currentSession = entityManger.unwrap(Session.class);
 			User user = currentSession.get(User.class, id);
@@ -44,18 +44,18 @@ public class UserDAO implements IUserDAO{
 
 	@Override
 	public void saveUser(User user) {
-		try 
+		try
 		{
 			Session currentSession = entityManger.unwrap(Session.class);
 			currentSession.merge(user);
 		}
 		catch(Exception ex) {System.out.println(ex.getMessage());}
-		
+
 	}
 
 	@Override
 	public void deleteUser(int id) {
-		try 
+		try
 		{
 			Session currentSession = entityManger.unwrap(Session.class);
 			User user = currentSession.get(User.class, id);

@@ -1,10 +1,7 @@
 package com.example.entity;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.example.entity.Emprunt.Status;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,9 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "role")
@@ -32,6 +27,6 @@ public class Role {
     private String description;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> employees = new HashSet<User>();
+    private Set<User> employees = new HashSet<>();
 
 }
