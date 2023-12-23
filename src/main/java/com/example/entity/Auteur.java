@@ -46,7 +46,5 @@ public class Auteur {
     private Set<Livre> livres;
 
 
-
-
 }
 
