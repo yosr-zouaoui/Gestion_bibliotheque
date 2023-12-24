@@ -29,6 +29,9 @@ public class LivreController {
 	@Autowired
     private LivreService livreService;
 	
+	@Autowired
+    private AuteurService auteurService;
+	
 	@GetMapping
     @ApiOperation(value = "Cette opération nous permet de recevoir la liste des livres")
     public ModelAndView getLivres(Model model) 
@@ -43,7 +46,10 @@ public class LivreController {
     @ApiOperation(value = "Afficher le formulaire d'ajout d'un livre")
     public ModelAndView getCreateAuteurForm(Model model) {
         Livre nouvelLivre = new Livre();
+        List<Auteur> auteurs = new ArrayList<Auteur>();
+        auteurs = auteurService.getAuteurs();
         model.addAttribute("nouvelLivre", nouvelLivre);
+        model.addAttribute("auteurs", auteurs);
         return new ModelAndView("LivreTemplates/ajoutLivre", model.asMap());
     }
     /* Action Create*/
@@ -51,7 +57,9 @@ public class LivreController {
     @ApiOperation(value = "Cette opération nous permet d'ajouter un livre")
     public ModelAndView createAuteur(@ModelAttribute("nouvelLivre") Livre livre) 
 	{
-        livreService.saveLivre(livre);
+		Auteur selectedAuteur = auteurService.getAuteur(livre.getAuteur().getAuteur_id());
+        livre.setAuteur(selectedAuteur);
+		livreService.saveLivre(livre);
         return new ModelAndView("redirect:/api/livres/"+livre.getLivre_id());
     }
 	
