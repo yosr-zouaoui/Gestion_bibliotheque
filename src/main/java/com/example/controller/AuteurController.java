@@ -29,7 +29,6 @@ public class AuteurController {
         return new ModelAndView("listesAuteur", model.asMap());
     }
 
-    
     @GetMapping("/{id}")
     @ApiOperation(value = "Cette opération nous permet de retourner un auteur demandé")
     public Auteur getAuteur(@PathVariable Long id) {

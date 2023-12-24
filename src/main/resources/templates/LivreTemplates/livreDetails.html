@@ -1,0 +1,69 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+	crossorigin="anonymous">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+	rel="stylesheet" type="text/css" />
+<title>Livre Details</title>
+</head>
+
+<body>
+<div class="container-sm">
+<h1 class="text-danger"> Livre Details </h1>
+<br>
+<form  th:object="${livre}" method="post">
+    <div class="form-group">
+        <label for="nom">ISBN:</label>
+        <input type="text" class="form-control" id="ISBN" th:field="*{ISBN}" disabled>
+    </div>
+    <div class="form-group">
+        <label for="prenom">Titre:</label>
+        <input type="text" class="form-control" id="titre" th:field="*{titre}" disabled>
+    </div>
+     <div class="form-group">
+        <label for="dateNaissance">Date de publication:</label>
+        <input type="number" class="form-control" id="anneePublication" th:field="*{anneePublication}" disabled>
+    </div>
+        <div class="form-group">
+        <label for="prenom">Description:</label>
+        <input type="text" class="form-control" id="description" th:field="*{description}" disabled>
+    </div>
+   <div class="form-group">
+        <label for="status">Langue:</label>
+       <input  type ="text" th:field="*{langue}" id="langue" class="form-control" disabled>  
+     </div>
+     
+     <div class="form-group">
+        <label for="status">Genre:</label>
+       <input type="text" id="genre" th:field="*{genre}" class="form-control" disabled>
+     </div>
+     
+    <div class="form-group">
+		
+        <label for="nationalite">Quantité:</label>
+        <input th:style="${livre.quantite > 0} ? 'background-color: green;' : 'background-color: red;color:white;'" type="text" class="form-control" id="nationalite" th:field="*{quantite}" disabled>
+    </div>>
+</form>
+</div>
+</div>
+
+
+<!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

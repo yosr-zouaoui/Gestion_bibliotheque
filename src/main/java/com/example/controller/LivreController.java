@@ -56,9 +56,10 @@ public class LivreController {
     }
 	
     @GetMapping("/{id}")
-    @ApiOperation(value = "Cette opération nous permet de retourner un auteur demandé")
-    public Livre getAuteur(@PathVariable Long id) {
-        return livreService.getLivre(id);
+    @ApiOperation(value = "Cette opération nous permet de retourner un livre demandé")
+    public ModelAndView getLivre( Model model, @PathVariable Long id) {
+    	model.addAttribute("livre", livreService.getLivre(id));
+        return new ModelAndView("LivreTemplates/livreDetails", model.asMap()); 
     }
 	
 }
