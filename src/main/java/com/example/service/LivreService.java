@@ -1,0 +1,48 @@
+package com.example.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.dao.LiverDAO;
+import com.example.dao.UserDAO;
+import com.example.entity.Auteur;
+import com.example.entity.Livre;
+
+@Service
+public class LivreService implements ILivreService {
+
+	@Autowired
+	private LiverDAO livreDAO;
+	
+	@Transactional
+	@Override
+	public List<Livre> getLivres() {return livreDAO.getLivres();}
+
+	@Transactional
+	@Override
+	public Livre getLivre(Long id) {return livreDAO.getLivre(id);}
+
+	@Transactional
+	@Override
+	public void saveLivre(Livre livre) {livreDAO.saveLivre(livre);}
+
+	@Transactional
+	@Override
+	public void deleteLivre(Long id) {livreDAO.deleteLivre(id);}
+
+	@Transactional
+	@Override
+	public Livre getLivreForUsers(Long id) {return livreDAO.getLivreForUsers(id);}
+
+	@Transactional
+	@Override
+	public List<Livre> getLivresForUsers() {return livreDAO.getLivresForUsers();}
+
+	@Transactional
+	@Override
+	public Auteur getAuteurByLivreId(Long id) {return livreDAO.getAuteurByLivreId(id);}
+
+}
