@@ -1,27 +1,17 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/dashboard}">
 
 <head>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-	crossorigin="anonymous">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
-	rel="stylesheet" type="text/css" />
 <title>Listes des auteurs</title>
 </head>
 
 <body>
+	<div class="main-content container-fluid" layout:fragment="content">
 <div class="container-sm">
-<h1 class="text-danger">Update Auteur </h1>
+<div class="page-title">
+					    <h3>Mettre à jour Auteur</h3>
+					</div>
 <form th:action="@{'/api/auteurs/update/' + ${existingAuteur.auteur_id}}" method="POST">
 <input type="hidden" name="_method" value="PUT" />
     <!-- Include form fields for updating Auteur properties -->
@@ -54,5 +44,6 @@
     <button type="submit" class="btn btn-primary">Update Auteur</button>
 </form>
 </div>
+	</div>
 </body>
 </html>

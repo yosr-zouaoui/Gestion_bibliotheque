@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api/livres")
+@RequestMapping("/livres")
 @Api(value = "Livre Controller")
 public class LivreController {
 
@@ -60,7 +60,7 @@ public class LivreController {
 		Auteur selectedAuteur = auteurService.getAuteur(livre.getAuteur().getAuteur_id());
         livre.setAuteur(selectedAuteur);
 		livreService.saveLivre(livre);
-        return new ModelAndView("redirect:/api/livres/"+livre.getLivre_id());
+        return new ModelAndView("redirect:/livres/"+livre.getLivre_id());
     }
 	
     @GetMapping("/{id}")
