@@ -15,4 +15,5 @@ public interface ILivreDAO {
 	Livre getLivreForUsers(Long id);
 	List<Livre> getLivresForUsers();
 	Auteur getAuteurByLivreId (Long id);
+	void saveLivres(List<Livre> Livres);
 }

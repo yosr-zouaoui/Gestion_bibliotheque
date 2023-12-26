@@ -2,6 +2,9 @@ package com.example.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.example.entity.Auteur;
 import com.example.entity.Livre;
 
@@ -15,4 +18,7 @@ public interface ILivreService {
 	Livre getLivreForUsers(Long id);
 	List<Livre> getLivresForUsers();
 	Auteur getAuteurByLivreId (Long id);
+	void saveLivres(List<Livre> livres);
+	Page<Livre> getPaginatedLivres(Pageable pageable);
+	
 }

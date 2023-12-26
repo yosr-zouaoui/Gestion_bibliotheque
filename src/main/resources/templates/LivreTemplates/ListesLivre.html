@@ -34,7 +34,7 @@
 					        </tr>
                             </thead>
                             <tbody>
-                            <tr scope="row" th:each="livre : ${livres}">
+                            <tr scope="row" th:each="livre : ${livres.content}">
 					            <td th:text="${livre.ISBN}"></td>
 					            <td>
 									<a th:href="@{'/livres/' + ${livre.livre_id}}" >
@@ -55,13 +55,41 @@
 					                <input type="hidden" name="_method" value="delete" />
 					                <button type="submit" onClick="return confirm('sure?')" class="btn btn-danger btn-sm">Delete</button>
 					            
-					                <a th:href="@{'/livres/updateLivreForm/' + ${livre.livre_id}}" class="btn btn-primary btn-sm">Update</a>
+					                <a th:href="@{'/updateLivreForm/' + ${livre.livre_id}}" class="btn btn-primary btn-sm">Update</a>
 					            </form>
 					            
 					            </td>
 					        </tr>
                             </tbody>
                         </table>
+					     <nav aria-label="Page navigation" class="d-flex justify-right mt-3">
+					        <ul class="pagination">
+					            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/livres(page=0)}">First</a>
+					            </li>
+					            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/livres(page=${currentPage - 1})}">Previous</a>
+					            </li>
+					            <li class="page-item" th:each="i : ${#numbers.sequence(0, livres.totalPages - 1)}"
+					                th:classappend="${currentPage == i ? 'active' : ''}">
+					                <a class="page-link" th:href="@{/livres(page=${i})}" th:text="${i + 1}"></a>
+					            </li>
+					            <li class="page-item" th:classappend="${currentPage == livres.totalPages - 1 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/livres(page=${currentPage + 1})}">Next</a>
+					            </li>
+					            <li class="page-item" th:classappend="${currentPage == livres.totalPages - 1 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/livres(page=${livres.totalPages - 1})}">Last</a>
+					            </li>
+					        </ul>
+					    </nav>
+                        <!-->
+                        <div th:if="${livres.totalPages > 0}" class="pagination"
+						    th:each="pageNumber : ${pageNumbers}">
+						    <a th:href="@{/livres(size=${livres.size}, page=${pageNumber})}"
+						        th:text=${pageNumber}
+						        th:class="${pageNumber==livres.number + 1} ? active"></a>
+						</div>
+						<!-->
                     </div>
                 </div>
             </div>

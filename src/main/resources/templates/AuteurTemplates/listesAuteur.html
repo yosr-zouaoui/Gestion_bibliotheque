@@ -32,7 +32,7 @@
 					        </tr>
                             </thead>
                             <tbody>
-                            <tr scope="row" th:each="auteur : ${auteurs}">
+                            <tr scope="row" th:each="auteur : ${auteurs.content}">
 					            <td>
 									<a th:href="@{'/auteurs/'+ ${auteur.auteur_id}}">
 					        			<span th:text="${auteur.nom}"></span>
@@ -53,6 +53,26 @@
 					        </tr>
                             </tbody>
                         </table>
+                        <nav aria-label="Page navigation" class="d-flex justify-right mt-3">
+					        <ul class="pagination">
+					            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/auteurs(page=0)}">First</a>
+					            </li>
+					            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/auteurs(page=${currentPage - 1})}">Previous</a>
+					            </li>
+					            <li class="page-item" th:each="i : ${#numbers.sequence(0, auteurs.totalPages - 1)}"
+					                th:classappend="${currentPage == i ? 'active' : ''}">
+					                <a class="page-link" th:href="@{/auteurs(page=${i})}" th:text="${i + 1}"></a>
+					            </li>
+					            <li class="page-item" th:classappend="${currentPage == auteurs.totalPages - 1 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/auteurs(page=${currentPage + 1})}">Next</a>
+					            </li>
+					            <li class="page-item" th:classappend="${currentPage == auteurs.totalPages - 1 ? 'disabled' : ''}">
+					                <a class="page-link" th:href="@{/auteurs(page=${auteurs.totalPages - 1})}">Last</a>
+					            </li>
+					        </ul>
+					    </nav>
                     </div>
                 </div>
             </div>

@@ -3,10 +3,13 @@ package com.example.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.entity.Auteur;
+import com.example.entity.Livre;
 import com.example.service.AuteurService;
 
 import io.swagger.annotations.Api;
@@ -23,9 +26,10 @@ public class AuteurController {
 
     @GetMapping("/auteurs")
     @ApiOperation(value = "Cette opération nous permet de recevoir la liste des auteurs")
-    public ModelAndView getAuteurs(Model model) {
-        List<Auteur> auteurs = auteurService.getAuteurs();
+    public ModelAndView getAuteurs(Model model,@RequestParam(defaultValue = "0") int page) {
+    	Page<Auteur> auteurs = auteurService.getPaginatedLivres(PageRequest.of(page,5));
         model.addAttribute("auteurs", auteurs);
+        model.addAttribute("currentPage", page);
         return new ModelAndView("AuteurTemplates/listesAuteur", model.asMap());
     }
 
@@ -88,5 +92,12 @@ public class AuteurController {
     public ModelAndView deleteAuteur(@PathVariable Long id) {
         auteurService.deleteAuteur(id);
         return new ModelAndView("redirect:/auteurs");
+    }
+    
+    
+    //save sample data
+    @PostMapping("/testsaveauteurs")
+    public void testsaveauteurs(@RequestBody List<Auteur> auteurs) {
+        auteurService.saveAuteurs(auteurs);
     }
 }

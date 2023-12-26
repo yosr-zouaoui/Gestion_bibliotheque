@@ -2,8 +2,13 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,14 +39,17 @@ public class LivreController {
     private LivreService livreService;
 	
 	@Autowired
-    private AuteurService auteurService;
+    private AuteurService auteurService;	
 	
-	@GetMapping(value = "/livres", params = { "page", "size" })
+	@GetMapping(value = "/livres")
     @ApiOperation(value = "Cette opération nous permet de recevoir la liste des livres")
-    public ModelAndView getLivres(Model model) 
+    public ModelAndView getLivres(Model model,@RequestParam(defaultValue = "0") int page ) 
 	{
-        List<Livre> livres = livreService.getLivres();
-        model.addAttribute("livres", livres);
+        
+        Page<Livre> livrePage = livreService.getPaginatedLivres(PageRequest.of(page,5));
+        model.addAttribute("livres", livrePage);
+        model.addAttribute("currentPage", page);
+       
         return new ModelAndView("LivreTemplates/ListesLivre", model.asMap());
     }
 	
@@ -89,6 +99,7 @@ public class LivreController {
         Livre existingLivre = livreService.getLivre(id);
         if (existingLivre != null) {
         	livre.setLivre_id(id);
+        	livre.setAuteur(existingLivre.getAuteur());
             livreService.saveLivre(livre);
         }
         return new ModelAndView("redirect:/livres/{id}");
@@ -98,6 +109,7 @@ public class LivreController {
     @ApiOperation(value = "Cette opération nous permet de retourner un livre demandé")
     public ModelAndView getLivre( Model model, @PathVariable Long id) {
     	model.addAttribute("livre", livreService.getLivre(id));
+    	model.addAttribute("auteur",auteurService.getAuteur(livreService.getLivre(id).getAuteur().getAuteur_id()));
         return new ModelAndView("LivreTemplates/livreDetails", model.asMap()); 
     }
     
@@ -108,4 +120,9 @@ public class LivreController {
         return new ModelAndView("redirect:/livres");
     }
 	
+    //save sample data
+    @PostMapping("/testsavelivres")
+    public void testsavelivres(@RequestBody List<Livre> livres) {
+        livreService.saveLivres(livres);
+    }
 }

@@ -13,4 +13,5 @@ public interface IAuteurService {
     void saveAuteur(Auteur auteur);
 
     void deleteAuteur(Long id);
+    void saveAuteurs(List<Auteur> auteurs);
 }

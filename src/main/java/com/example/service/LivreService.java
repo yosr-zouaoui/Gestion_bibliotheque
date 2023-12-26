@@ -3,6 +3,8 @@ package com.example.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +16,13 @@ import com.example.entity.Livre;
 @Service
 public class LivreService implements ILivreService {
 
+	public static final int PRODUCT_PER_PAGE = 5;
 	@Autowired
 	private LiverDAO livreDAO;
 	
+	@Transactional
+	@Override
+	public Page<Livre> getPaginatedLivres(Pageable pageable){ return livreDAO.getPaginatedLivres(pageable);}
 	@Transactional
 	@Override
 	public List<Livre> getLivres() {return livreDAO.getLivres();}
@@ -44,5 +50,6 @@ public class LivreService implements ILivreService {
 	@Transactional
 	@Override
 	public Auteur getAuteurByLivreId(Long id) {return livreDAO.getAuteurByLivreId(id);}
-
+	@Override
+	public void saveLivres(List<Livre> livres) {livreDAO.saveLivres(livres);}
 }
