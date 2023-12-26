@@ -12,7 +12,7 @@
 <div class="page-title">
 					    <h3>Mettre à jour Auteur</h3>
 					</div>
-<form th:action="@{'/api/auteurs/update/' + ${existingAuteur.auteur_id}}" method="POST">
+<form th:action="@{'/update/' + ${existingAuteur.auteur_id}}" method="post">
 <input type="hidden" name="_method" value="PUT" />
     <!-- Include form fields for updating Auteur properties -->
     <div class="form-group">
@@ -31,9 +31,9 @@
    <div class="form-group">
         <label for="status">Status:</label>
         <select th:field="*{existingAuteur.status}" class="form-control">
-  <option value="VIVANT">VIVANT</option>
-  <option value="DECEDE">DECEDE</option>
-</select>
+		  <option value="VIVANT">VIVANT</option>
+		  <option value="DECEDE">DECEDE</option>
+		</select>
     </div>
     <div class="form-group">
         <label for="nationalite">Nationalite:</label>

@@ -69,6 +69,8 @@ public class AuteurController {
         // Return the Thymeleaf view name (updateAuteurForm.html)
         return new ModelAndView("AuteurTemplates/updateForm", model.asMap());
     }
+    
+    
     @PutMapping("/update/{id}")
     @ApiOperation(value = "Cette opération nous permet de modifier les données d'un auteur choisi")
     public ModelAndView updateAuteur(@PathVariable Long id, @ModelAttribute("existingAuteur") Auteur auteur) {
@@ -78,7 +80,7 @@ public class AuteurController {
             auteur.setAuteur_id(id);
             auteurService.saveAuteur(auteur);
         }
-        return new ModelAndView("redirect:/auteurs");
+        return new ModelAndView("redirect:/auteurs/{id}");
     }
 
     @DeleteMapping("delete/{id}")

@@ -34,7 +34,7 @@
                             <tbody>
                             <tr scope="row" th:each="auteur : ${auteurs}">
 					            <td>
-									<a th:href="@{'/auteurs/'+ ${auteur.auteur_id}}" target="_blank">
+									<a th:href="@{'/auteurs/'+ ${auteur.auteur_id}}">
 					        			<span th:text="${auteur.nom}"></span>
 					    			</a>
 								</td>
