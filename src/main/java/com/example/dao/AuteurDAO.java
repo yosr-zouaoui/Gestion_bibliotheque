@@ -23,6 +23,7 @@ public class AuteurDAO implements IAuteurDAO {
     @Autowired
     private EntityManager entityManager;
 
+    //Get Auteurs Paginated List
     public Page<Auteur> getPaginatedAuteurs(Pageable pageable)
 	{
 		int pageSize = pageable.getPageSize();
@@ -32,55 +33,49 @@ public class AuteurDAO implements IAuteurDAO {
 		Session currentSession = entityManager.unwrap(Session.class);
 		Query<Auteur> query = currentSession.createQuery("from Auteur", Auteur.class);
 		List<Auteur> auteurs = query.getResultList();
-		
-		
-        List<Auteur> list;
+		List<Auteur> list;
 
-        if (auteurs.size() < startItem) {
-            list = Collections.emptyList();
-        } else {
+        if (auteurs.size() < startItem) {list = Collections.emptyList();} 
+        else {
             int toIndex = Math.min(startItem + pageSize, auteurs.size());
             list = auteurs.subList(startItem, toIndex);
         }
 
         Page<Auteur> auteurPage = new PageImpl<Auteur>(list, PageRequest.of(currentPage, pageSize), auteurs.size());
-
         return auteurPage;
 	}
     
+    //Get Auteurs
     @Override
     public List<Auteur> getAuteurs() {
-        try {
+        try 
+        {
             Session currentSession = entityManager.unwrap(Session.class);
             Query<Auteur> query = currentSession.createQuery("from Auteur", Auteur.class);
             return query.getResultList();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+        } catch (Exception ex) {System.out.println(ex.getMessage());return null;}
     }
 
+    // Get auteur by id
     @Override
     public Auteur getAuteur(Long id) {
-        try {
+        try 
+        {
             Session currentSession = entityManager.unwrap(Session.class);
             return currentSession.get(Auteur.class, id);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+        } catch (Exception ex) {System.out.println(ex.getMessage());return null;}
     }
 
+    //Create auteur
     @Override
     public void saveAuteur(Auteur auteur) {
         try {
             Session currentSession = entityManager.unwrap(Session.class);
             currentSession.merge(auteur);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        } catch (Exception ex) {System.out.println(ex.getMessage());}
     }
 
+    //Delete Auteur
     @Override
     public void deleteAuteur(Long id) {
         try {
@@ -89,11 +84,10 @@ public class AuteurDAO implements IAuteurDAO {
             if (auteur != null) {
                 currentSession.remove(auteur);
             }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        } catch (Exception ex) {System.out.println(ex.getMessage());}
     }
 
+    //Sample Save Auteurs [just for adding sample data]
 	@Override
 	public void saveAuteurs(List<Auteur> auteurs) {
 		try 
@@ -102,6 +96,6 @@ public class AuteurDAO implements IAuteurDAO {
 	        for (Auteur auteur : auteurs) {
 	        	currentSession.merge(auteur);
 	        	}
-    } 	catch (Exception ex) {System.out.println(ex.getMessage());}
-}
+		} catch (Exception ex) {System.out.println(ex.getMessage());}
+	}
 }

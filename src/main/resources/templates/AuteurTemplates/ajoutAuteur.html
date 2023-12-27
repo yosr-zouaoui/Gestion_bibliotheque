@@ -12,7 +12,7 @@
                     <div class="page-title">
 					    <h3>Ajouter Auteurs</h3>
 					</div>
-<form th:action="@{/createAuteur}" th:object="${nouvelAuteur}" method="post" required>
+<form th:action="@{/auteurs/createAuteur}" th:object="${nouvelAuteur}" method="post" required>
     <div class="form-group">
         <label for="nom">Nom:</label>
         <input type="text" class="form-control" id="nom" th:field="*{nom}" required>

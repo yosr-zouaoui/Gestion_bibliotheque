@@ -12,7 +12,7 @@
 <div class="page-title">
 					    <h3>Mettre à jour Auteur</h3>
 					</div>
-<form th:action="@{'/update/' + ${existingAuteur.auteur_id}}" method="post">
+<form th:action="@{'/auteurs/update/' + ${existingAuteur.auteur_id}}" method="post">
 <input type="hidden" name="_method" value="PUT" />
     <!-- Include form fields for updating Auteur properties -->
     <div class="form-group">

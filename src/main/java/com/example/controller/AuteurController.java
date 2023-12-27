@@ -17,68 +17,71 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.Model;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/auteurs")
 @Api(value = "Auteur Controller")
 public class AuteurController {
 
+	
     @Autowired
     private AuteurService auteurService;
 
-    @GetMapping("/auteurs")
+    
+    
+    // Get All Auteurs
+    @GetMapping("")
     @ApiOperation(value = "Cette opération nous permet de recevoir la liste des auteurs")
-    public ModelAndView getAuteurs(Model model,@RequestParam(defaultValue = "0") int page) {
+    public ModelAndView getAuteurs(Model model,@RequestParam(defaultValue = "0") int page) 
+    {
     	Page<Auteur> auteurs = auteurService.getPaginatedLivres(PageRequest.of(page,5));
-        model.addAttribute("auteurs", auteurs);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("auteurs", auteurs);model.addAttribute("currentPage", page);
         return new ModelAndView("AuteurTemplates/listesAuteur", model.asMap());
     }
-
-    
-    @GetMapping("/auteurs/{id}")
+   
+    // Get Auteur By ID
+    @GetMapping("/{id}")
     @ApiOperation(value = "Cette opération nous permet de retourner un auteur demandé")
-    public ModelAndView getAuteur( Model model, @PathVariable Long id) {
+    public ModelAndView getAuteur( Model model, @PathVariable Long id) 
+    {
     	model.addAttribute("auteur", auteurService.getAuteur(id));
         return new ModelAndView("AuteurTemplates/auteurDetails", model.asMap()); 
     }
     
-
-   /* Form create   */ 
+    
+    // Get Create Auteur Form Page
     @GetMapping("/createAuteurForm")
     @ApiOperation(value = "Afficher le formulaire de création d'un auteur")
-    public ModelAndView getCreateAuteurForm(Model model) {
+    public ModelAndView getCreateAuteurForm(Model model) 
+    {
         Auteur nouvelAuteur = new Auteur();
         model.addAttribute("nouvelAuteur", nouvelAuteur);
         return new ModelAndView("AuteurTemplates/ajoutAuteur", model.asMap());
     }
     
-    
+    // Create Auteur
     @PostMapping("/createAuteur")
     @ApiOperation(value = "Cette opération nous permet de créer un auteur")
-    public ModelAndView createAuteur(@ModelAttribute("nouvelAuteur") Auteur auteur) {
+    public ModelAndView createAuteur(@ModelAttribute("nouvelAuteur") Auteur auteur) 
+    {
         auteurService.saveAuteur(auteur);
         return new ModelAndView("redirect:/auteurs");
     }
 
     
-    /* update form */ 
+    // Get Update Auteur Form Page 
     @GetMapping("/updateAuteurForm/{id}")
     @ApiOperation(value = "Afficher le formulaire de mise à jour d'un auteur")
-    public ModelAndView getUpdateAuteurForm(@PathVariable Long id, Model model) {
-        // Retrieve the existing Auteur object from the database based on the ID
+    public ModelAndView getUpdateAuteurForm(@PathVariable Long id, Model model) 
+    {
         Auteur existingAuteur = auteurService.getAuteur(id);
-
-        // Add the existing Auteur object to the model
         model.addAttribute("existingAuteur", existingAuteur);
-
-        // Return the Thymeleaf view name (updateAuteurForm.html)
         return new ModelAndView("AuteurTemplates/updateForm", model.asMap());
     }
     
     
     @PutMapping("/update/{id}")
     @ApiOperation(value = "Cette opération nous permet de modifier les données d'un auteur choisi")
-    public ModelAndView updateAuteur(@PathVariable Long id, @ModelAttribute("existingAuteur") Auteur auteur) {
-        // Assurez-vous que l'auteur existe avant de le mettre à jour
+    public ModelAndView updateAuteur(@PathVariable Long id, @ModelAttribute("existingAuteur") Auteur auteur) 
+    {
         Auteur existingAuteur = auteurService.getAuteur(id);
         if (existingAuteur != null) {
             auteur.setAuteur_id(id);
@@ -87,9 +90,10 @@ public class AuteurController {
         return new ModelAndView("redirect:/auteurs/{id}");
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "Cette opération nous permet de supprimer un auteur précis")
-    public ModelAndView deleteAuteur(@PathVariable Long id) {
+    public ModelAndView deleteAuteur(@PathVariable Long id) 
+    {
         auteurService.deleteAuteur(id);
         return new ModelAndView("redirect:/auteurs");
     }
@@ -97,7 +101,5 @@ public class AuteurController {
     
     //save sample data
     @PostMapping("/testsaveauteurs")
-    public void testsaveauteurs(@RequestBody List<Auteur> auteurs) {
-        auteurService.saveAuteurs(auteurs);
-    }
+    public void testsaveauteurs(@RequestBody List<Auteur> auteurs) {auteurService.saveAuteurs(auteurs);}
 }
