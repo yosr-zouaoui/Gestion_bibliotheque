@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +44,10 @@ public class LivreController {
 	
 	@GetMapping(value = "/livres")
     @ApiOperation(value = "Cette opération nous permet de recevoir la liste des livres")
-    public ModelAndView getLivres(Model model,@RequestParam(defaultValue = "0") int page ) 
+    public ModelAndView getLivres(Model model,@RequestParam(defaultValue = "0") int page,@Param("keyword") String keyword ) 
 	{
-        
-        Page<Livre> livrePage = livreService.getPaginatedLivres(PageRequest.of(page,5));
+
+        Page<Livre> livrePage = livreService.getPaginatedLivres(PageRequest.of(page,5), keyword);
         model.addAttribute("livres", livrePage);
         model.addAttribute("currentPage", page);
        

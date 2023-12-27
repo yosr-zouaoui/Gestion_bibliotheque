@@ -22,7 +22,7 @@ public class LivreService implements ILivreService {
 	
 	@Transactional
 	@Override
-	public Page<Livre> getPaginatedLivres(Pageable pageable){ return livreDAO.getPaginatedLivres(pageable);}
+	public Page<Livre> getPaginatedLivres(Pageable pageable, String keyword){ return livreDAO.getPaginatedLivres(pageable, keyword);}
 	@Transactional
 	@Override
 	public List<Livre> getLivres() {return livreDAO.getLivres();}
@@ -50,6 +50,12 @@ public class LivreService implements ILivreService {
 	@Transactional
 	@Override
 	public Auteur getAuteurByLivreId(Long id) {return livreDAO.getAuteurByLivreId(id);}
+	
+	@Transactional
 	@Override
 	public void saveLivres(List<Livre> livres) {livreDAO.saveLivres(livres);}
+	
+	@Transactional
+	@Override
+	public List<Livre> search(String keyword) {return livreDAO.search(keyword);}
 }

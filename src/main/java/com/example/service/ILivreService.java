@@ -19,6 +19,9 @@ public interface ILivreService {
 	List<Livre> getLivresForUsers();
 	Auteur getAuteurByLivreId (Long id);
 	void saveLivres(List<Livre> livres);
-	Page<Livre> getPaginatedLivres(Pageable pageable);
+	
+	Page<Livre> getPaginatedLivres(Pageable pageable, String keyword);
+	
+	List<Livre> search(String keyword);
 	
 }

@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,29 +29,34 @@ public class LiverDAO implements ILivreDAO {
 	private EntityManager entityManger;
 	
 	
-	public Page<Livre> getPaginatedLivres(Pageable pageable)
+	public Page<Livre> getPaginatedLivres(Pageable pageable, String keyword)
 	{
+		
 		int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
-        
-		Session currentSession = entityManger.unwrap(Session.class);
-		Query<Livre> query = currentSession.createQuery("from Livre", Livre.class);
-		List<Livre> livres = query.getResultList();
-		
-		
+        List<Livre> livres;
         List<Livre> list;
-
-        if (livres.size() < startItem) {
-            list = Collections.emptyList();
-        } else {
+        if(keyword != null)
+        {
+        	livres = this.search(keyword);
+        }
+        else
+        {
+			Session currentSession = entityManger.unwrap(Session.class);
+			Query<Livre> query = currentSession.createQuery("from Livre", Livre.class);
+			livres = query.getResultList();
+		}
+        
+        if (livres.size() < startItem) list = Collections.emptyList();
+        else {
             int toIndex = Math.min(startItem + pageSize, livres.size());
             list = livres.subList(startItem, toIndex);
         }
-
         Page<Livre> livrePage = new PageImpl<Livre>(list, PageRequest.of(currentPage, pageSize), livres.size());
 
         return livrePage;
+        
 	}
 	
 	@Override
@@ -146,5 +152,41 @@ public class LiverDAO implements ILivreDAO {
 	        	}
     } 	catch (Exception ex) {System.out.println(ex.getMessage());}
 	}
+
+	@Override
+	public List<Livre> search(String keyword) {
+	    
+		Session currentSession = entityManger.unwrap(Session.class);
+
+	    if(Livre.Langue.ARABE.toString().equals(keyword.toUpperCase()) || Livre.Langue.FRANCAIS.toString().equals(keyword.toUpperCase()) || Livre.Langue.ANGLAIS.toString().equals(keyword.toUpperCase()))
+	    {	
+	    Livre.Langue langueEnum = Livre.Langue.valueOf(keyword.toUpperCase());
+	    Query<Livre> query = currentSession.createQuery(
+	            "SELECT p FROM Livre p WHERE " +
+	            "p.langue = :keyword " ,
+	            Livre.class
+	    );
+	    query.setParameter("keyword", langueEnum);
+	    List<Livre> list = query.getResultList();
+	    return list;
+	    }
+	    else 
+	    {
+	    Query<Livre> query = currentSession.createQuery(
+	            "SELECT p FROM Livre p WHERE " +
+	            "p.titre LIKE CONCAT('%', :keyword, '%') OR " +
+	            "p.genre LIKE CONCAT('%', :keyword, '%') OR " +
+	            "CONCAT(p.ISBN, '') LIKE CONCAT('%', :keyword, '%')",
+	            Livre.class
+	    );
+
+	    query.setParameter("keyword", keyword);
+	    List<Livre> list = query.getResultList();
+	    return list;
+		}
+	    
+	}
+
+
 
 }

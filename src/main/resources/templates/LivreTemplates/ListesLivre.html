@@ -15,6 +15,13 @@
                     <div class="page-title">
 					    <h3>List Livres</h3>
 					</div>
+					<form th:action="@{/livres}">
+				     <input type="text" class=" border-primary " name="keyword" id="keyword" size="50" th:value="${keyword}" placeholder="Search livre title, genre, ISBN, ou langue" required />
+				    &nbsp;
+				    <input type="submit" class="btn border-primary " value="Search" />
+				    &nbsp;
+				    <a class="btn border-primary "value="Clear"  th:href="@{/livres}" > Clear </a>
+				</form>
                     <div class="d-flex ">
                         <a class="btn btn-success btn-sm" th:href="@{/createLivreForm}">Ajouter Livre</a>
                     </div>
@@ -97,4 +104,9 @@
 
 </div>
 </body>
+<script type="text/javascript">
+    function clearSearch() {
+        window.location = "[[@{/livres}]]";
+    }
+</script>
 </html>
