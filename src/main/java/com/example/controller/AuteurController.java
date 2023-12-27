@@ -3,10 +3,13 @@ package com.example.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.entity.Auteur;
+import com.example.entity.Livre;
 import com.example.service.AuteurService;
 
 import io.swagger.annotations.Api;
@@ -14,27 +17,30 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.Model;
 
 @RestController
-@RequestMapping("/api/auteurs")
+@RequestMapping("/")
 @Api(value = "Auteur Controller")
 public class AuteurController {
 
     @Autowired
     private AuteurService auteurService;
 
-    @GetMapping
+    @GetMapping("/auteurs")
     @ApiOperation(value = "Cette opération nous permet de recevoir la liste des auteurs")
-    public ModelAndView getAuteurs(Model model) {
-        List<Auteur> auteurs = auteurService.getAuteurs();
+    public ModelAndView getAuteurs(Model model,@RequestParam(defaultValue = "0") int page) {
+    	Page<Auteur> auteurs = auteurService.getPaginatedLivres(PageRequest.of(page,5));
         model.addAttribute("auteurs", auteurs);
-        return new ModelAndView("listesAuteur", model.asMap());
+        model.addAttribute("currentPage", page);
+        return new ModelAndView("AuteurTemplates/listesAuteur", model.asMap());
     }
 
     
-    @GetMapping("/{id}")
+    @GetMapping("/auteurs/{id}")
     @ApiOperation(value = "Cette opération nous permet de retourner un auteur demandé")
-    public Auteur getAuteur(@PathVariable Long id) {
-        return auteurService.getAuteur(id);
+    public ModelAndView getAuteur( Model model, @PathVariable Long id) {
+    	model.addAttribute("auteur", auteurService.getAuteur(id));
+        return new ModelAndView("AuteurTemplates/auteurDetails", model.asMap()); 
     }
+    
 
    /* Form create   */ 
     @GetMapping("/createAuteurForm")
@@ -42,7 +48,7 @@ public class AuteurController {
     public ModelAndView getCreateAuteurForm(Model model) {
         Auteur nouvelAuteur = new Auteur();
         model.addAttribute("nouvelAuteur", nouvelAuteur);
-        return new ModelAndView("ajoutAuteur", model.asMap());
+        return new ModelAndView("AuteurTemplates/ajoutAuteur", model.asMap());
     }
     
     
@@ -50,7 +56,7 @@ public class AuteurController {
     @ApiOperation(value = "Cette opération nous permet de créer un auteur")
     public ModelAndView createAuteur(@ModelAttribute("nouvelAuteur") Auteur auteur) {
         auteurService.saveAuteur(auteur);
-        return new ModelAndView("redirect:/api/auteurs");
+        return new ModelAndView("redirect:/auteurs");
     }
 
     
@@ -65,8 +71,10 @@ public class AuteurController {
         model.addAttribute("existingAuteur", existingAuteur);
 
         // Return the Thymeleaf view name (updateAuteurForm.html)
-        return new ModelAndView("updateForm", model.asMap());
+        return new ModelAndView("AuteurTemplates/updateForm", model.asMap());
     }
+    
+    
     @PutMapping("/update/{id}")
     @ApiOperation(value = "Cette opération nous permet de modifier les données d'un auteur choisi")
     public ModelAndView updateAuteur(@PathVariable Long id, @ModelAttribute("existingAuteur") Auteur auteur) {
@@ -76,13 +84,20 @@ public class AuteurController {
             auteur.setAuteur_id(id);
             auteurService.saveAuteur(auteur);
         }
-        return new ModelAndView("redirect:/api/auteurs");
+        return new ModelAndView("redirect:/auteurs/{id}");
     }
 
     @DeleteMapping("delete/{id}")
     @ApiOperation(value = "Cette opération nous permet de supprimer un auteur précis")
     public ModelAndView deleteAuteur(@PathVariable Long id) {
         auteurService.deleteAuteur(id);
-        return new ModelAndView("redirect:/api/auteurs");
+        return new ModelAndView("redirect:/auteurs");
+    }
+    
+    
+    //save sample data
+    @PostMapping("/testsaveauteurs")
+    public void testsaveauteurs(@RequestBody List<Auteur> auteurs) {
+        auteurService.saveAuteurs(auteurs);
     }
 }
