@@ -20,15 +20,20 @@ public class UserDAO implements IUserDAO{
 	@Autowired
 	private EntityManager entityManger;
 	@Override
-	public List<User> getUsers() {
-		try
-		{
-			Session currentSession = entityManger.unwrap(Session.class);
-			Query<User> query = currentSession.createQuery("from User", User.class);
-			List<User> list = query.getResultList();
-			return list;
-		}
-		catch(Exception ex) {System.out.println(ex.getMessage());return null;}
+	public List<User> getUsers(String authority) {
+		 try {
+		        Session currentSession = entityManger.unwrap(Session.class);
+
+		        // Use a join query to fetch users based on their roles
+		        Query<User> query = currentSession.createQuery("SELECT u FROM User u JOIN Authority r ON u.username = r.user.username WHERE r.authority LIKE CONCAT('%', :authority, '%')", User.class);
+		        query.setParameter("authority", authority);
+
+		        List<User> userList = query.getResultList();
+		        return userList;
+		    } catch (Exception ex) {
+		        System.out.println(ex.getMessage());
+		        return null;
+		    }
 		}
 
 	@Override

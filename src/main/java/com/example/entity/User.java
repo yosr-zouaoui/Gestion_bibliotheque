@@ -24,14 +24,16 @@ public class User {
     @Id
     @Column(name = "username", length = 50)
     private String username;
-
+    private String nom;
+    private String prenom;
+    private String email;
     @Column(name = "password", length = 500, nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "dtype", insertable = false, updatable = false)
-    private String dtype;
+   /* @Column(name = "dtype", insertable = false, updatable = false)
+    private String dtype;*/
 }
 

@@ -28,7 +28,7 @@ public class UserController {
 
 	@GetMapping("/users")
 	@ApiOperation(value = "Cette operation nous permet de recevoir la liste des utilisateurs")
-	public List<User> getUsers(){return userService.getUsers();}
+	public List<User> getUsers(){return userService.getUsers("USER");}
 
 	@PostMapping("/user")
 	@ApiOperation(value = "Cette operation nous permet de créer un utilisateur")

@@ -18,7 +18,7 @@ public class UserService implements IUserService{
 	//@Transactional délégue la gestion des transactions au conteneur IOC
 	@Transactional
 	@Override
-	public List<User> getUsers() {return userDAO.getUsers();}
+	public List<User> getUsers(String role) {return userDAO.getUsers(role);}
 
 	@Transactional
 	@Override

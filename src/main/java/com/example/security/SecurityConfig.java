@@ -24,7 +24,11 @@ public class SecurityConfig {
 	//Injection des dependance 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	private static final String[] WHITE_LIST_URL = {
+		 	
+			"/auteurs/testsaveauteurs"
+		 	};
+ 
 	@Bean
 	public JdbcUserDetailsManager jdbcuserDetailsmanager(DataSource dataSource)
 	{
@@ -51,6 +55,8 @@ public class SecurityConfig {
 		httpSecurity
 				.authorizeHttpRequests(req ->
                 req
+	                .requestMatchers(WHITE_LIST_URL)
+	                .permitAll()
                 	.requestMatchers("/auteurs/createAuteurForm").hasRole("ADMIN")
                 	.requestMatchers("/auteurs/createAuteur").hasRole("ADMIN")
                 	.requestMatchers("/auteurs/updateAuteurForm/{id}").hasRole("ADMIN")
