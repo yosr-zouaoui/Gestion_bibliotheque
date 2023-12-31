@@ -17,6 +17,7 @@ import com.example.entity.Auteur;
 import com.example.entity.Livre;
 import com.example.entity.User;
 
+import io.micrometer.observation.annotation.Observed;
 import jakarta.persistence.EntityManager;
 
 @Repository
@@ -152,7 +153,7 @@ public class LiverDAO implements ILivreDAO {
 	        	}
     } 	catch (Exception ex) {System.out.println(ex.getMessage());}
 	}
-
+	
 	@Override
 	public List<Livre> search(String keyword) {
 	    

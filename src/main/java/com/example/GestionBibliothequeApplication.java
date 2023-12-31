@@ -9,12 +9,19 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
+
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 public class GestionBibliothequeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GestionBibliothequeApplication.class, args);
+	}
+	
+	@Bean
+	JvmThreadMetrics threadMetrics(){
+	    return new JvmThreadMetrics();
 	}
 
 }

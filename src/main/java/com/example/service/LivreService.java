@@ -1,5 +1,6 @@
 package com.example.service;
 
+import io.micrometer.observation.annotation.Observed;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,7 @@ public class LivreService implements ILivreService {
 	
 	@Transactional
 	@Override
-	public List<Livre> search(String keyword) {return livreDAO.search(keyword);}
+	@Observed(name = "Filtrage.Livres")
+	public List<Livre> search(String keyword) 
+	{return livreDAO.search(keyword);}
 }
