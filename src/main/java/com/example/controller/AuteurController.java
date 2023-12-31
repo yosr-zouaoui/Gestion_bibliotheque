@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -49,6 +50,7 @@ public class AuteurController {
     
     // Get Create Auteur Form Page
     @GetMapping("/createAuteurForm")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Afficher le formulaire de création d'un auteur")
     public ModelAndView getCreateAuteurForm(Model model) 
     {
@@ -59,6 +61,7 @@ public class AuteurController {
     
     // Create Auteur
     @PostMapping("/createAuteur")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Cette opération nous permet de créer un auteur")
     public ModelAndView createAuteur(@ModelAttribute("nouvelAuteur") Auteur auteur) 
     {
@@ -69,6 +72,7 @@ public class AuteurController {
     
     // Get Update Auteur Form Page 
     @GetMapping("/updateAuteurForm/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Afficher le formulaire de mise à jour d'un auteur")
     public ModelAndView getUpdateAuteurForm(@PathVariable Long id, Model model) 
     {
@@ -79,6 +83,7 @@ public class AuteurController {
     
     
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Cette opération nous permet de modifier les données d'un auteur choisi")
     public ModelAndView updateAuteur(@PathVariable Long id, @ModelAttribute("existingAuteur") Auteur auteur) 
     {
@@ -91,6 +96,7 @@ public class AuteurController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Cette opération nous permet de supprimer un auteur précis")
     public ModelAndView deleteAuteur(@PathVariable Long id) 
     {

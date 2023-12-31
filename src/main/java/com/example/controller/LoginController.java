@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,10 @@ public class LoginController {
     public ModelAndView getHomePage(Model model) {
         return new ModelAndView("/pages/landing_page", model.asMap());
     }
-    
+    @GetMapping("/profile")
+    public Authentication authentication (Authentication auth)
+    {
+    	return auth;
+    }
 
 }
