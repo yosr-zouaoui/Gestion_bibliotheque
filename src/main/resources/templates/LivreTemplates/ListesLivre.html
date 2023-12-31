@@ -22,7 +22,7 @@
 				    &nbsp;
 				    <a class="btn border-primary "value="Clear"  th:href="@{/livres}" > Clear </a>
 				</form>
-                    <div class="d-flex ">
+                    <div class="d-flex " th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                         <a class="btn btn-success btn-sm" th:href="@{/createLivreForm}">Ajouter Livre</a>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
 					           	<th scope="col">Genre</th>
 					           	<th scope="col">Langue </th>
 					           	<th scope="col">Quantité</th>
-					           	<th></th>
+					           	<th th:if="${#authorization.expression('hasRole(''ADMIN'')')}" scope="col">Action</th>
 					        </tr>
                             </thead>
                             <tbody>
@@ -56,7 +56,7 @@
 					            <td th:text="${livre.genre}"></td>
 					            <td th:text="${livre.langue}"></td>
 					            <td th:text="${livre.quantite}"></td>
-					            <td>
+					            <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
 					            <!-- Add buttons for delete and update -->
 					            <form th:action="@{'/livres/delete/' + ${livre.livre_id}}" method="post">
 					                <input type="hidden" name="_method" value="delete" />

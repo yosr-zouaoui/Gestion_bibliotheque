@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +57,7 @@ public class LivreController {
 	
 	/* Form create   */ 
     @GetMapping("/createLivreForm")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Afficher le formulaire d'ajout d'un livre")
     public ModelAndView getCreateLivreForm(Model model) {
         Livre nouvelLivre = new Livre();
@@ -70,6 +72,7 @@ public class LivreController {
 
 
     @PostMapping("/createLivre")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Cette opération nous permet d'ajouter un livre")
     public ModelAndView createLivre(@ModelAttribute("nouvelLivre") Livre livre, @ModelAttribute("auteur") Auteur auteur ) {
         Auteur selectedAuteur = auteurService.getAuteur(auteur.getAuteur_id());
@@ -80,6 +83,7 @@ public class LivreController {
 
 	
 	@GetMapping("/updateLivreForm/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Afficher le formulaire de mise à jour d'un livre")
     public ModelAndView getUpdateLivreForm(@PathVariable Long id, Model model) {
         // Retrieve the existing Auteur object from the database based on the ID
@@ -94,6 +98,7 @@ public class LivreController {
     
     
     @PutMapping("/updateLivre/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Cette opération nous permet de modifier les données d'un livre choisi")
     public ModelAndView updateLivre(@PathVariable Long id, @ModelAttribute("existingLivre") Livre livre) {
         // Assurez-vous que l'auteur existe avant de le mettre à jour
@@ -115,6 +120,7 @@ public class LivreController {
     }
     
     @DeleteMapping("/livres/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Cette opération nous permet de supprimer un livre précis")
     public ModelAndView deleteLivre(@PathVariable Long id) {
         livreService.deleteLivre(id);
