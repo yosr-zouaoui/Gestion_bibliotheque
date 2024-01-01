@@ -10,10 +10,14 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.configurers.provisioning.UserDetailsManagerConfigurer.UserDetailsBuilder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import com.example.entity.Adherent;
+import com.example.entity.Admin;
 
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 
@@ -30,19 +34,32 @@ public class GestionBibliothequeApplication {
 
 	
 	@Bean
-	CommandLineRunner commanLinerunnerJdbcUsers (JdbcUserDetailsManager jdbcUserDetailsmanager)
-	{
-		return args -> {
-			if (!jdbcUserDetailsmanager.userExists("user")) {
-			jdbcUserDetailsmanager.createUser(
-					User.withUsername("user").password(this.passwordEncoder().encode("user")).roles("USER").build());
-			}
-			if (!jdbcUserDetailsmanager.userExists("admin")) {
-			jdbcUserDetailsmanager.createUser(
-					User.withUsername("admin").password(passwordEncoder().encode("admin")).roles("USER","ADMIN").build());
-			}
-		};
+	CommandLineRunner commandLineRunnerJdbcUsers(JdbcUserDetailsManager jdbcUserDetailsManager) {
+	    return args -> {
+	    	if (!jdbcUserDetailsManager.userExists("user")) {
+	    		com.example.entity.User adherent =  Adherent.builder()
+	                    .username("user")
+	                    .password(passwordEncoder().encode("user"))
+	                    .enabled(true)
+	                    .dtype("USER")  // Set dtype manually
+	                    .build();
+
+	            jdbcUserDetailsManager.createUser(adherent);
+	        }
+
+	        if (!jdbcUserDetailsManager.userExists("admin")) {
+	            com.example.entity.User admin = Admin.builder()
+	                    .username("admin")
+	                    .password(passwordEncoder().encode("admin"))
+	                    .enabled(true)
+	                    .dtype("ADMIN")  // Set dtype manually
+	                    .build();
+
+	            jdbcUserDetailsManager.createUser(admin);
+	        }
+	    };
 	}
+
 	
 
 }

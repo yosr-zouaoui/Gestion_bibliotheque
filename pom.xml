@@ -19,6 +19,7 @@
 		<start-class>com.example.GestionBibliothequeApplication</start-class>
 	</properties>
 	<dependencies>
+		
 		<!--> start:Swagger <!-->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -123,6 +124,11 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-jpa</artifactId>
 </dependency>
+		<dependency>
+			<groupId>spring.3im</groupId>
+			<artifactId>demoRestApi1</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
