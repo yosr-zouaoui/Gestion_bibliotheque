@@ -14,7 +14,8 @@ public interface IEmpuntService {
 	void deleteEmprunt(Long id);
 	
 	List<Emprunt> getEmpuntsByUserId(Long id);
-	List<Emprunt> search(String keyword);
 	
 	void updateEmpruntStatus (String status, Long id);
+	List<Emprunt> search(String keyword, String username);
+	Page<Emprunt> getEmpruntsByUsername(Pageable pageable, String keyword, String username);
 }

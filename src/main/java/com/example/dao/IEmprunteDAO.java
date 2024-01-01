@@ -15,7 +15,8 @@ public interface IEmprunteDAO {
 	void deleteEmprunt(Long id);
 	
 	List<Emprunt> getEmpuntsByUserId(Long id);
-	List<Emprunt> search(String keyword);
+	List<Emprunt> search(String keyword, String username);
 	
 	void updateEmpruntStatus (String status, Long id);
+	Page<Emprunt> getEmpruntsByUsername(Pageable pageable, String keyword, String username);
 }

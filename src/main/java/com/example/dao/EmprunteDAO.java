@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import com.example.entity.Emprunt;
 import com.example.entity.Emprunt.Status;
@@ -17,6 +18,7 @@ import com.example.entity.Livre;
 
 import jakarta.persistence.EntityManager;
 
+@Repository
 public class EmprunteDAO implements IEmprunteDAO {
 
 	//When workign with spring MVC and Hibernate, in DAO implementation we inject the session factory to get the current session.
@@ -34,7 +36,7 @@ public class EmprunteDAO implements IEmprunteDAO {
         List<Emprunt> list;
         if(keyword != null)
         {
-        	Emprunts = this.search(keyword);
+        	Emprunts = this.search(keyword, null);
         }
         else
         {
@@ -53,6 +55,39 @@ public class EmprunteDAO implements IEmprunteDAO {
         return EmpruntPage;
 	}
 
+	@Override
+	public Page<Emprunt> getEmpruntsByUsername(Pageable pageable, String keyword, String username) {
+	    int pageSize = pageable.getPageSize();
+	    int currentPage = pageable.getPageNumber();
+	    int startItem = currentPage * pageSize;
+	    List<Emprunt> emprunts;
+	    List<Emprunt> list;
+
+	    if (keyword != null) {
+	        emprunts = this.search(keyword, username);
+	    } else {
+	        Session currentSession = entityManger.unwrap(Session.class);
+	        Query<Emprunt> query = currentSession.createQuery(
+	            "SELECT e FROM Emprunt e WHERE e.adherent.username LIKE CONCAT('%', :username, '%')",
+	            Emprunt.class
+	        );
+	        query.setParameter("username", username); // Set the parameter value here
+	        emprunts = query.getResultList();
+	    }
+
+	    if (emprunts.size() < startItem) {
+	        list = Collections.emptyList();
+	    } else {
+	        int toIndex = Math.min(startItem + pageSize, emprunts.size());
+	        list = emprunts.subList(startItem, toIndex);
+	    }
+
+	    Page<Emprunt> empruntPage = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), emprunts.size());
+
+	    return empruntPage;
+	}
+
+	
 	@Override
 	public Emprunt getEmprunt(Long id) 
 	{
@@ -109,12 +144,25 @@ public class EmprunteDAO implements IEmprunteDAO {
 
 
 	@Override
-	public List<Emprunt> search(String keyword) {
+	public List<Emprunt> search(String keyword, String username) {
 		try {
 		Session currentSession = entityManger.unwrap(Session.class);
 	    if(Emprunt.Status.EMPRUNTE.toString().equals(keyword.toUpperCase()) || Emprunt.Status.EN_ATTENTE.toString().equals(keyword.toUpperCase()) || Emprunt.Status.REFUSE.toString().equals(keyword.toUpperCase()) || Emprunt.Status.RETOURNE.toString().equals(keyword.toUpperCase()) )
 	    {
 	    Emprunt.Status statusEnum = Emprunt.Status.valueOf(keyword.toUpperCase());
+	    if(username != null)
+	    {
+		    Query<Emprunt> query = currentSession.createQuery(
+		            "SELECT p FROM Emprunt p WHERE " +
+		            "p.status = :keyword AND p.username = :username" ,
+		            Emprunt.class
+		    );
+		    query.setParameter("keyword", statusEnum);
+		    List<Emprunt> emprunt = query.getResultList();
+		    return emprunt;
+	    }
+	    else 
+	    {
 	    Query<Emprunt> query = currentSession.createQuery(
 	            "SELECT p FROM Emprunt p WHERE " +
 	            "p.status = :keyword " ,
@@ -124,7 +172,9 @@ public class EmprunteDAO implements IEmprunteDAO {
 	    List<Emprunt> emprunt = query.getResultList();
 	    return emprunt;
 	    }
-	    else return null;
+	    
+		}
+	    return null;
 		}
 		catch (Exception ex) {
 	        System.out.println(ex.getMessage());

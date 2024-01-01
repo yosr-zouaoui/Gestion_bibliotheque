@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.example.dao.EmprunteDAO;
 import com.example.dao.LiverDAO;
@@ -12,6 +13,7 @@ import com.example.entity.Emprunt;
 
 import jakarta.transaction.Transactional;
 
+@Service
 public class EmpruntService implements IEmpuntService {
 
 	public static final int PRODUCT_PER_PAGE = 5;
@@ -35,14 +37,20 @@ public class EmpruntService implements IEmpuntService {
 
 	@Override
 	@Transactional
-	public List<Emprunt> getEmpuntsByUserId(Long id) {return empruntDAO.getEmpuntsByUserId(id);}
+	public Page<Emprunt> getEmpruntsByUsername(Pageable pageable, String keyword, String username){ return empruntDAO.getEmpruntsByUsername(pageable, keyword, username);}
 
 	@Override
 	@Transactional
-	public List<Emprunt> search(String keyword) {return empruntDAO.search(keyword);}
+	public List<Emprunt> search(String keyword, String username) {return empruntDAO.search(keyword,username);}
 
 	@Override
 	@Transactional
 	public void updateEmpruntStatus(String status, Long id) {empruntDAO.updateEmpruntStatus(status, id);}
+
+	@Override
+	public List<Emprunt> getEmpuntsByUserId(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -45,12 +45,12 @@
                             <a th:href="@{/livres}">Livres</a>
                         </li>
 
-                        <li>
-                            <a href="@{/empuntes}">Emprutes</a>
+                        <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                            <a href="@{/emprunts}">Emprutes</a>
                         </li>
 
-                        <li>
-                            <a href="component-buttons.html">Buttons</a>
+                        <li th:if="${#authorization.expression('hasRole(''USER'')')}">
+                            <a th:href="@{/emprunts/__${#authentication.name}__}">Mes Empruntes</a>
                         </li>
 
                         <li>

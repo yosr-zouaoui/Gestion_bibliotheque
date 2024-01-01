@@ -31,7 +31,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/Emprunts")
+@RequestMapping("/emprunts")
 @Api(value = "Emprunt Controller")
 public class EmpruntController {
 
@@ -44,6 +44,17 @@ public class EmpruntController {
 	{
 
         Page<Emprunt> empruntPage = empruntService.getEmprunts(PageRequest.of(page,5), keyword);
+        model.addAttribute("emprunts", empruntPage);
+        model.addAttribute("currentPage", page);
+       
+        return new ModelAndView("EmpruntTemplates/ListesEmprunt", model.asMap());
+    }
+	
+	@GetMapping(value = "/{username}")
+    @ApiOperation(value = "Cette opération nous permet de recevoir la liste des emprunts par utilisateur")
+    public ModelAndView getEmpruntsByUserId(Model model,@RequestParam(defaultValue = "0") int page,@Param("keyword") String keyword, @PathVariable String username ) 
+	{
+		Page<Emprunt> empruntPage = empruntService.getEmpruntsByUsername(PageRequest.of(page,5), keyword, username);
         model.addAttribute("emprunts", empruntPage);
         model.addAttribute("currentPage", page);
        

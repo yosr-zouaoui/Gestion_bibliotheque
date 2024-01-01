@@ -57,8 +57,8 @@ public class Emprunt {
 	    private Livre livre;
 
 	    @ManyToOne
-	    @JoinColumn(name = "user_id")
-	    private Adherent adherent;
+	    @JoinColumn(name = "username")
+	    private User adherent;
 
 	    // Constructors
 
