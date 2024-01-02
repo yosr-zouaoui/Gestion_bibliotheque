@@ -69,7 +69,51 @@
         </div>
  
 </form>
+<div class="container-md">
+			
+		
+			
+					
+			<div class="container-fluid" id="body-container-fluid">
+				<div class="container">
+					<!---- for body container ---->
+					<div class="row">
+						<div class="col-lg-12">
+						<div class="card" style="width:100%">
+						<div  class="card-body" >
+<h3>Comments</h3>
+    <div class="card"  th:each="comment : ${comments}">
+  <div class="card-header">
+    <span th:text="${comment.adherent.username}" style="font-weight: bold; color: blue;font-size:20px"></span>
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+     <p th:text="${comment.contenu}"></p>
+       <form th:if="${comment.adherent.username eq principal.name or #authorization.expression('hasRole(''ADMIN'')')}" th:action="@{'/livres/comments/' + ${comment.comment_id}}" method="post">
+ 				
+ 				<input type="hidden" name="_method" value="DELETE"/>
+                <button  class="btn btn-danger btn-sm"  type="submit">Delete Comment</button>
+                
+            </form>
+    </blockquote>
+  </div>
+</div>
+    
+    
+ <form th:action="@{'/livres/' + ${livre.livre_id} + '/addComment'}" method="post">
+       <div class="d-flex justify-content-between">
+        <input class="form-control" type="text" id="commentContent" name="commentContent" required/>
 
+        <button class="btn btn-success btn-sm" type="submit">Add Comment</button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 

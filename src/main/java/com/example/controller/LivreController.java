@@ -1,8 +1,10 @@
 package com.example.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +28,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.dao.CommentDAO;
 import com.example.entity.Auteur;
+import com.example.entity.Comment;
 import com.example.entity.Livre;
+import com.example.entity.User;
 import com.example.service.AuteurService;
+import com.example.service.CommentService;
 import com.example.service.LivreService;
+import com.example.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,7 +50,15 @@ public class LivreController {
     private LivreService livreService;
 	
 	@Autowired
+    private UserService userService;
+	
+	@Autowired
     private AuteurService auteurService;	
+	
+	 @Autowired
+	    private CommentService commentService;
+	 @Autowired
+	    private CommentDAO commentDAO;
 	
 	@GetMapping(value = "/livres")
     @ApiOperation(value = "Cette opération nous permet de recevoir la liste des livres")
@@ -113,8 +130,12 @@ public class LivreController {
     
     @GetMapping("/livres/{id}")
     @ApiOperation(value = "Cette opération nous permet de retourner un livre demandé")
-    public ModelAndView getLivre( Model model, @PathVariable Long id) {
+    public ModelAndView getLivre( Model model, @PathVariable Long id, Principal principal) {
+    	 List<Comment> comments = commentService.getCommentsByLivre(id);
+    	model.addAttribute("comments", comments);
     	model.addAttribute("livre", livreService.getLivre(id));
+    	 model.addAttribute("principal", principal);
+
     	model.addAttribute("auteur",auteurService.getAuteur(livreService.getLivre(id).getAuteur().getAuteur_id()));
         return new ModelAndView("LivreTemplates/livreDetails", model.asMap()); 
     }
@@ -132,4 +153,46 @@ public class LivreController {
     public void testsavelivres(@RequestBody List<Livre> livres) {
         livreService.saveLivres(livres);
     }
+    
+
+    //add comment
+    @PostMapping("/livres/{livreId}/addComment")
+    public ModelAndView addComment(@PathVariable Long livreId, @RequestParam String commentContent) {
+    	 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	    
+    	    // Assuming your User entity has a username property
+    	    String username = authentication.getName();
+    	    
+    	    // Retrieve the user by username (you might need to implement this method in your user service)
+    	    User user = userService.getUserByUsername(username);
+    	Livre livre = livreService.getLivre(livreId);
+
+        Comment comment = new Comment();
+        comment.setContenu(commentContent);
+        comment.setLivre(livre);
+        comment.setAdherent(user);
+
+        commentService.saveComment(comment);
+
+        // Redirect back to the Livre detail page
+        return new ModelAndView("redirect:/livres/"+ livreId); 
+    }
+    
+    
+    //delete comment
+    @DeleteMapping("livres/comments/{commentId}")
+    public ModelAndView deleteComment(@PathVariable Long commentId, Principal principal) {
+        // Retrieve authenticated user
+        String username = principal.getName();
+        User authenticatedUser = userService.getUserByUsername(username);
+        Comment commentToDelete = commentDAO.getCommentById(commentId);
+        Long livreId = commentToDelete.getLivre().getLivre_id();
+        // Delete comment if it belongs to the authenticated user
+        commentService.deleteComment(commentId, authenticatedUser);
+        
+
+        // Redirect back to the Livre detail page
+        return new ModelAndView("redirect:/livres/"+livreId); 
+    }
 }
+

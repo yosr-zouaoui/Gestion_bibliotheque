@@ -22,6 +22,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("ADMIN")
 public class Admin extends User {
     private double salaire;
 

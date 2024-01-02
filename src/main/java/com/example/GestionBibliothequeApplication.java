@@ -45,7 +45,19 @@ public class GestionBibliothequeApplication {
 	                    .build();
 
 	            jdbcUserDetailsManager.createUser(adherent);
+	            
+	            //test
+	            com.example.entity.User adherentt =  Adherent.builder()
+	                    .username("test")
+	                    .password(passwordEncoder().encode("test"))
+	                    .enabled(true)
+	                    .dtype("USER")  // Set dtype manually
+	                    .build();
+
+	            jdbcUserDetailsManager.createUser(adherentt);
 	        }
+	    	
+	    	
 
 	        if (!jdbcUserDetailsManager.userExists("admin")) {
 	            com.example.entity.User admin = Admin.builder()

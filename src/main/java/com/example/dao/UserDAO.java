@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.example.entity.User;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Repository
 public class UserDAO implements IUserDAO{
@@ -19,6 +20,8 @@ public class UserDAO implements IUserDAO{
 	//Autowired : allows Spring to resolve and inject collaborating beans into our bean
 	@Autowired
 	private EntityManager entityManger;
+	 @PersistenceContext
+	    private EntityManager entityManager;
 	@Override
 	public List<User> getUsers(String authority) {
 		 try {
@@ -68,4 +71,10 @@ public class UserDAO implements IUserDAO{
 		}
 		catch(Exception ex){System.out.println(ex.getMessage());}
 		}
+	
+	 public User getUserByUsername(String username) {
+	        return entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+	                .setParameter("username", username)
+	                .getSingleResult();
+	    }
 }

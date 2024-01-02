@@ -32,5 +32,9 @@ public class UserService implements IUserService{
 	@Override
 	public void deleteUser(int id) {userDAO.deleteUser(id);}
 
-
+	@Transactional
+	@Override
+	public User getUserByUsername(String username) {
+        return userDAO.getUserByUsername(username);
+    }
 }

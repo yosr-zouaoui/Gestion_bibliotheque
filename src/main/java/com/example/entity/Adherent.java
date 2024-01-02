@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("USER")
 public class Adherent extends User {
     @Temporal(TemporalType.DATE)
     private Date abonnementDateExp;

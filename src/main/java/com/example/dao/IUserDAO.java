@@ -9,4 +9,5 @@ public interface IUserDAO {
 	User getUser(int id);
 	void saveUser(User user);
 	void deleteUser(int id);
+	User getUserByUsername(String username);
 }
